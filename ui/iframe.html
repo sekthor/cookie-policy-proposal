@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+<style>
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  color: white;
+}
+.hidden {
+  display: none;
+}
+.wrap {
+  height: 0px;
+  overflow: hidden;
+}
+.default {
+  display: none;
+}
+#cookie-message {
+  width: 100%;
+  background-color: skyblue;
+  position: absolute;
+  bottom: 0;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+input::placeholder {
+  color: white;
+}
+input, button {
+  padding: .5rem;
+  background-color: lightblue;
+  border: none;
+}
+button {
+  border-radius: 10px;
+}
+#accept {
+  background-color: navy;
+  color: white;
+}
+</style>
+
+<script>
+function toggleCustomize() {
+    customizer = document.getElementById("customize")
+    if (customizer.classList.contains("default")) {
+      customizer.classList = []
+    } else {
+      customizer.classList.push("default")
+    }
+}
+</script>
+</head>
+<body>
+<div id="cookie-message">
+  <div>
+  <p>This site uses cookies. Please accept the cookie policy, to continue.</p>
+  <p>Provide your name to accept cookies.</p>
+  <form action="/api/user" method="post" autocomplete="on" id="cookie-form">
+
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem">
+      <input type="text" id="givenname" name="givenname" autocomplete="given-name" placeholder="firstname" required>
+      <input type="text" id="familyname" name="familyname" autocomplete="family-name" placeholder="lastname" required>
+      <button id="accept">Yes, accept cookies</button>
+      <button type="button" onclick="toggleCustomize()">Customize settings</button>
+    </div>
+
+    <div class="wrap">
+      <input type="text" id="street-address" name="street-address" autocomplete="street-address" />
+      <input type="text" id="address-level1" name="address-level1" autocomplete="address-level1" />
+      <input type="text" id="address-level2" name="address-level2" autocomplete="address-level2" />
+      <input type="text" id="country" name="country" autocomplete="country" />
+      <input type="text" id="postal-code" name="postal-code" autocomplete="postal-code" />
+      <input type="text" id="country-name" name="country-name" autocomplete="country-name" />
+    </div>
+
+    <div id="customize" class="default">
+      <input type="checkbox" id="nutallergy" name="nutallergy">
+      <label for="nutallergy">No Nuts</label>
+      <input type="checkbox" id="vegan" name="vegan">
+      <label for="vegan">Vegan</label>
+      <input type="checkbox" id="glutenfree" name="glutenfree">
+      <label for="glutenfree">Glutenfree</label>
+    </div>
+
+  </form>
+</div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cookieMessage = document.getElementById("cookie-message");
+        const cookieForm = document.getElementById("cookie-form");
+        
+        if (localStorage.getItem("cookies-accepted") === "true") {
+            cookieMessage.classList.add("hidden");
+        }
+        
+        cookieForm.addEventListener("submit", function() {
+            localStorage.setItem("cookies-accepted", "true");
+            cookieMessage.classList.add("hidden");
+        });
+    });
+</script>
+
+</body>
+</html>
